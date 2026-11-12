@@ -1,0 +1,8 @@
+# Carga inicial (solo días 1 y 2) - 2026-11-12T12:02:57Z
+$ aws s3 cp data/entregas/fecha=2026-10-01/entregas.csv s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-01/entregas.csv
+upload: data/entregas/fecha=2026-10-01/entregas.csv to s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-01/entregas.csv
+$ aws s3 cp data/entregas/fecha=2026-10-02/entregas.csv s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-02/entregas.csv
+upload: data/entregas/fecha=2026-10-02/entregas.csv to s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-02/entregas.csv
+$ aws s3 ls s3://quintero-emanuel-entregas-final-de/entregas/ --recursive
+2026-11-12 07:02:59        313 entregas/fecha=2026-10-01/entregas.csv
+2026-11-12 07:03:01        313 entregas/fecha=2026-10-02/entregas.csv

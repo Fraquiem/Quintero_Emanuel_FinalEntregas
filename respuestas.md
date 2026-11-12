@@ -1,0 +1,13 @@
+# Respuestas
+
+## 1. ¿Por qué se consultó el tercer día sin registrar una partición nueva?
+
+La tabla externa ya tenía habilitada la proyección de particiones. Athena calcula los valores de `fecha` a partir de las propiedades de la tabla, en lugar de necesitar una entrada de Glue para cada día. En `evidencias/verificacion_recursos_aws.txt` se observa `projection.enabled=true`, `projection.fecha.type=date`, formato `yyyy-MM-dd`, intervalo de `1` `DAYS` y rango inclusivo `2026-10-01,2026-10-03`. La plantilla `storage.location.template` resuelve cada fecha en `s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/`. Por eso, al subir el CSV del día 3 a ese prefijo, Athena pudo encontrarlo con las reglas existentes.
+
+`evidencias/carga_tercer_dia_s3.txt` muestra que `VersionId`, `UpdateTime` y parámetros de la tabla no cambiaron tras la carga, y que Glue seguía con cero particiones registradas. No se utilizó crawler, `MSCK REPAIR TABLE`, `ALTER TABLE ADD PARTITION` ni particiones individuales de Terraform. La ejecución `55064003-1e57-4fc0-bffa-ecc5ff245bf9` produjo los seis registros en `resultados/final/verificacion_tercer_dia.csv`; la ejecución `14416c99-7d19-4240-aec9-a5fffd37c393` produjo el total de 18 en `resultados/final/total_registros.csv`. Ambos ID están vinculados a sus consultas en `evidencias/ejecuciones_athena.csv`.
+
+## 2. ¿Qué pasaría con un archivo del 4 de octubre?
+
+No se ejecutó esa prueba. Con la configuración actual, el comportamiento esperado es que Athena ignore el archivo de `2026-10-04`: esa fecha queda fuera del rango proyectado, que termina el 3. Una consulta filtrada por el 4 no devolvería filas, sin producir un error por estar fuera del rango; el total seguiría siendo 18. La [documentación de AWS sobre tipos de proyección](https://docs.aws.amazon.com/athena/latest/ug/partition-projection-supported-types.html) define los extremos del rango de fechas como inclusivos.
+
+Para incluir el día 4 hay que ampliar el rango en Terraform, por ejemplo estableciendo `rango_proyeccion_fecha.fin` en `2026-10-04`, y ejecutar `terraform apply`; también se puede usar `NOW` como extremo final, teniendo en cuenta que AWS evalúa las fechas proyectadas en UTC. El archivo debe conservar el esquema y la ruta de la plantilla, `entregas/fecha=2026-10-04/entregas.csv`. Además, las consultas existentes limitan explícitamente la fecha al 3 de octubre, por lo que habría que ampliar sus filtros para que incluyan el 4. Modificar una propiedad de la tabla mediante Terraform es un cambio de infraestructura, a diferencia de la incorporación del día 3, que ya estaba dentro del rango.

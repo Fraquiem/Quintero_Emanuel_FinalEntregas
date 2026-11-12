@@ -1,0 +1,102 @@
+[
+    {
+        "id_ejecucion": "21124626-73ec-499b-b446-e3d37f501a68",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:03:10.570000-05:00",
+        "fin": "2026-11-12T07:03:11.120000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/21124626-73ec-499b-b446-e3d37f501a68.csv",
+        "bytes_escaneados": 626,
+        "consulta": "SELECT\n    fecha,\n    estado,\n    COUNT(*) AS total_intentos\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha BETWEEN '2026-10-01' AND '2026-10-03'\nGROUP BY fecha, estado\nORDER BY fecha ASC, estado ASC"
+    },
+    {
+        "id_ejecucion": "204a4bb9-a8fe-450c-8e32-f55057ef152f",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:03:25.876000-05:00",
+        "fin": "2026-11-12T07:03:26.483000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/204a4bb9-a8fe-450c-8e32-f55057ef152f.csv",
+        "bytes_escaneados": 313,
+        "consulta": "SELECT\n    fecha,\n    CAST(ROUND(AVG(CAST(duracion_minutos AS DOUBLE)), 2) AS DECIMAL(10, 2)) AS duracion_promedio_minutos\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha = '2026-10-02'\n  AND estado = 'entregado'\nGROUP BY fecha"
+    },
+    {
+        "id_ejecucion": "17b01941-b30a-487f-a59d-5c4e41e43255",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:03:18.432000-05:00",
+        "fin": "2026-11-12T07:03:19.057000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/17b01941-b30a-487f-a59d-5c4e41e43255.csv",
+        "bytes_escaneados": 626,
+        "consulta": "SELECT\n    fecha,\n    ciudad,\n    CAST(\n        ROUND(100.0 * COUNT_IF(estado = 'entregado') / CAST(COUNT(*) AS DOUBLE), 2)\n        AS DECIMAL(5, 2)\n    ) AS porcentaje_exito\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha BETWEEN '2026-10-01' AND '2026-10-03'\nGROUP BY fecha, ciudad\nORDER BY fecha ASC, ciudad ASC"
+    },
+    {
+        "id_ejecucion": "55064003-1e57-4fc0-bffa-ecc5ff245bf9",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:03:58.098000-05:00",
+        "fin": "2026-11-12T07:03:58.599000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/55064003-1e57-4fc0-bffa-ecc5ff245bf9.csv",
+        "bytes_escaneados": 323,
+        "consulta": "SELECT\n    fecha,\n    id_envio,\n    ciudad,\n    transportadora,\n    estado,\n    duracion_minutos\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha = '2026-10-03'\nORDER BY id_envio ASC"
+    },
+    {
+        "id_ejecucion": "58765ecf-e1de-4401-aa2a-8043890e02f3",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:04:28.559000-05:00",
+        "fin": "2026-11-12T07:04:29.046000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/58765ecf-e1de-4401-aa2a-8043890e02f3.csv",
+        "bytes_escaneados": 949,
+        "consulta": "SELECT\n    fecha,\n    ciudad,\n    CAST(\n        ROUND(100.0 * COUNT_IF(estado = 'entregado') / CAST(COUNT(*) AS DOUBLE), 2)\n        AS DECIMAL(5, 2)\n    ) AS porcentaje_exito\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha BETWEEN '2026-10-01' AND '2026-10-03'\nGROUP BY fecha, ciudad\nORDER BY fecha ASC, ciudad ASC"
+    },
+    {
+        "id_ejecucion": "14416c99-7d19-4240-aec9-a5fffd37c393",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:04:13.666000-05:00",
+        "fin": "2026-11-12T07:04:14.205000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/14416c99-7d19-4240-aec9-a5fffd37c393.csv",
+        "bytes_escaneados": 949,
+        "consulta": "SELECT\n    COUNT(*) AS total_registros,\n    COUNT_IF(fecha = '2026-10-03') AS registros_tercer_dia,\n    COUNT(DISTINCT fecha) AS fechas_con_datos\nFROM mensajeria_entregas.intentos_entrega"
+    },
+    {
+        "id_ejecucion": "cf17865b-48ae-4013-97d7-780ee6cd0f74",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:04:35.820000-05:00",
+        "fin": "2026-11-12T07:04:36.486000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/cf17865b-48ae-4013-97d7-780ee6cd0f74.csv",
+        "bytes_escaneados": 313,
+        "consulta": "SELECT\n    fecha,\n    CAST(ROUND(AVG(CAST(duracion_minutos AS DOUBLE)), 2) AS DECIMAL(10, 2)) AS duracion_promedio_minutos\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha = '2026-10-02'\n  AND estado = 'entregado'\nGROUP BY fecha"
+    },
+    {
+        "id_ejecucion": "dc03d83f-07c1-45e1-b76b-9043e4e0696e",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:04:20.984000-05:00",
+        "fin": "2026-11-12T07:04:21.465000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/dc03d83f-07c1-45e1-b76b-9043e4e0696e.csv",
+        "bytes_escaneados": 949,
+        "consulta": "SELECT\n    fecha,\n    estado,\n    COUNT(*) AS total_intentos\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha BETWEEN '2026-10-01' AND '2026-10-03'\nGROUP BY fecha, estado\nORDER BY fecha ASC, estado ASC"
+    },
+    {
+        "id_ejecucion": "2ffae99c-8b8b-40c3-a9c6-68ec38987ab9",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:03:33.671000-05:00",
+        "fin": "2026-11-12T07:03:34.270000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/2ffae99c-8b8b-40c3-a9c6-68ec38987ab9.csv",
+        "bytes_escaneados": 626,
+        "consulta": "SELECT\n    COUNT(*) AS total_registros,\n    COUNT(DISTINCT fecha) AS fechas_con_datos,\n    MIN(fecha) AS fecha_minima,\n    MAX(fecha) AS fecha_maxima\nFROM mensajeria_entregas.intentos_entrega"
+    },
+    {
+        "id_ejecucion": "81f55afa-e264-43c1-8413-d8c8378628a2",
+        "workgroup": "wg_entregas_quintero",
+        "estado": "SUCCEEDED",
+        "inicio": "2026-11-12T07:04:05.762000-05:00",
+        "fin": "2026-11-12T07:04:06.272000-05:00",
+        "ubicacion_resultado": "s3://quintero-emanuel-entregas-final-de/resultados-athena/81f55afa-e264-43c1-8413-d8c8378628a2.csv",
+        "bytes_escaneados": 323,
+        "consulta": "SELECT\n    fecha,\n    estado,\n    COUNT(*) AS total_intentos\nFROM mensajeria_entregas.intentos_entrega\nWHERE fecha = '2026-10-03'\nGROUP BY fecha, estado\nORDER BY estado ASC"
+    }
+]

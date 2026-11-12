@@ -1,0 +1,31 @@
+# terraform apply - 2026-11-12T12:02:05Z - región us-east-2
+# Comandos: terraform init; terraform validate; terraform plan -out=<plan fuera del repositorio>; terraform apply <plan>
+# Nota: el identificador de la cuenta AWS se reemplazó por <ID_CUENTA_AWS>; el resto de la salida es literal.
+
+aws_glue_catalog_database.entregas: Creating...
+aws_s3_bucket.datos: Creating...
+aws_glue_catalog_database.entregas: Creation complete after 1s [id=<ID_CUENTA_AWS>:mensajeria_entregas]
+aws_s3_bucket.datos: Creation complete after 2s [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_public_access_block.datos: Creating...
+aws_s3_bucket_ownership_controls.datos: Creating...
+aws_s3_bucket_server_side_encryption_configuration.datos: Creating...
+aws_athena_workgroup.entregas: Creating...
+aws_glue_catalog_table.intentos_entrega: Creating...
+aws_glue_catalog_table.intentos_entrega: Creation complete after 1s [id=<ID_CUENTA_AWS>:mensajeria_entregas:intentos_entrega]
+aws_s3_bucket_ownership_controls.datos: Creation complete after 1s [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_public_access_block.datos: Creation complete after 1s [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_server_side_encryption_configuration.datos: Creation complete after 1s [id=quintero-emanuel-entregas-final-de]
+aws_athena_workgroup.entregas: Creation complete after 1s [id=wg_entregas_quintero]
+
+Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+base_datos_glue = "mensajeria_entregas"
+bucket = "quintero-emanuel-entregas-final-de"
+plantilla_ubicacion_particion = "s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/"
+region = "us-east-2"
+tabla_glue = "intentos_entrega"
+ubicacion_datos = "s3://quintero-emanuel-entregas-final-de/entregas/"
+ubicacion_resultados_athena = "s3://quintero-emanuel-entregas-final-de/resultados-athena/"
+workgroup_athena = "wg_entregas_quintero"

@@ -1,0 +1,121 @@
+# Verificación de recursos con AWS CLI - 2026-11-12T12:02:37Z - región us-east-2
+
+$ aws s3api get-bucket-location --bucket quintero-emanuel-entregas-final-de
+{
+    "LocationConstraint": "us-east-2"
+}
+
+$ aws s3api get-public-access-block --bucket quintero-emanuel-entregas-final-de
+{
+    "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+    }
+}
+
+$ aws s3api get-bucket-ownership-controls --bucket quintero-emanuel-entregas-final-de
+{
+    "OwnershipControls": {
+        "Rules": [
+            {
+                "ObjectOwnership": "BucketOwnerEnforced"
+            }
+        ]
+    }
+}
+
+$ aws glue get-database --name mensajeria_entregas --query "Database.{Name:Name,Description:Description}"
+{
+    "Name": "mensajeria_entregas",
+    "Description": "Catálogo de los intentos de entrega de paquetes."
+}
+
+$ aws glue get-table --database-name mensajeria_entregas --name intentos_entrega --query "Table.{Name:Name,TableType:TableType,PartitionKeys:PartitionKeys,Columns:StorageDescriptor.Columns,Location:StorageDescriptor.Location,SerDe:StorageDescriptor.SerdeInfo,Parameters:Parameters}"
+{
+    "Name": "intentos_entrega",
+    "TableType": "EXTERNAL_TABLE",
+    "PartitionKeys": [
+        {
+            "Name": "fecha",
+            "Type": "string",
+            "Comment": "",
+            "Parameters": {}
+        }
+    ],
+    "Columns": [
+        {
+            "Name": "id_envio",
+            "Type": "string",
+            "Comment": "",
+            "Parameters": {}
+        },
+        {
+            "Name": "ciudad",
+            "Type": "string",
+            "Comment": "",
+            "Parameters": {}
+        },
+        {
+            "Name": "transportadora",
+            "Type": "string",
+            "Comment": "",
+            "Parameters": {}
+        },
+        {
+            "Name": "estado",
+            "Type": "string",
+            "Comment": "",
+            "Parameters": {}
+        },
+        {
+            "Name": "duracion_minutos",
+            "Type": "int",
+            "Comment": "",
+            "Parameters": {}
+        }
+    ],
+    "Location": "s3://quintero-emanuel-entregas-final-de/entregas/",
+    "SerDe": {
+        "Name": "csv",
+        "SerializationLibrary": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
+        "Parameters": {
+            "serialization.format": ",",
+            "field.delim": ","
+        }
+    },
+    "Parameters": {
+        "skip.header.line.count": "1",
+        "projection.fecha.format": "yyyy-MM-dd",
+        "projection.fecha.interval.unit": "DAYS",
+        "EXTERNAL": "TRUE",
+        "projection.fecha.range": "2026-10-01,2026-10-03",
+        "projection.enabled": "true",
+        "projection.fecha.interval": "1",
+        "classification": "csv",
+        "projection.fecha.type": "date",
+        "storage.location.template": "s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/"
+    }
+}
+
+$ aws glue get-partitions --database-name mensajeria_entregas --table-name intentos_entrega --query "length(Partitions)"
+0
+
+$ aws athena get-work-group --work-group wg_entregas_quintero --query "WorkGroup.{Name:Name,State:State,Configuration:Configuration.{Enforce:EnforceWorkGroupConfiguration,ResultConfiguration:ResultConfiguration}}"
+{
+    "Name": "wg_entregas_quintero",
+    "State": "ENABLED",
+    "Configuration": {
+        "Enforce": true,
+        "ResultConfiguration": {
+            "OutputLocation": "s3://quintero-emanuel-entregas-final-de/resultados-athena/",
+            "EncryptionConfiguration": {
+                "EncryptionOption": "SSE_S3"
+            }
+        }
+    }
+}
+
+$ aws s3 ls s3://quintero-emanuel-entregas-final-de --recursive  (antes de cargar datos)
+(sin objetos)

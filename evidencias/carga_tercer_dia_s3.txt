@@ -1,0 +1,47 @@
+# Incorporación del día 3 (solo subir el archivo y consultar) - 2026-11-12T12:03:52Z
+$ aws s3 cp data/entregas/fecha=2026-10-03/entregas.csv s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-03/entregas.csv
+upload: data/entregas/fecha=2026-10-03/entregas.csv to s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-03/entregas.csv
+$ aws s3 ls s3://quintero-emanuel-entregas-final-de/entregas/ --recursive
+2026-11-12 07:02:59        313 entregas/fecha=2026-10-01/entregas.csv
+2026-11-12 07:03:01        313 entregas/fecha=2026-10-02/entregas.csv
+2026-11-12 07:03:54        323 entregas/fecha=2026-10-03/entregas.csv
+
+# Propiedades de la tabla antes y después de cargar el día 3 (deben ser idénticas)
+$ aws glue get-table --database-name mensajeria_entregas --name intentos_entrega --query "Table.{VersionId:VersionId,UpdateTime:UpdateTime,Parameters:Parameters}"  (antes)
+{
+    "VersionId": "0",
+    "UpdateTime": "2026-11-12T07:02:12-05:00",
+    "Parameters": {
+        "skip.header.line.count": "1",
+        "projection.fecha.format": "yyyy-MM-dd",
+        "projection.fecha.interval.unit": "DAYS",
+        "EXTERNAL": "TRUE",
+        "projection.fecha.range": "2026-10-01,2026-10-03",
+        "projection.enabled": "true",
+        "projection.fecha.interval": "1",
+        "classification": "csv",
+        "projection.fecha.type": "date",
+        "storage.location.template": "s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/"
+    }
+}
+$ ... (después)
+{
+    "VersionId": "0",
+    "UpdateTime": "2026-11-12T07:02:12-05:00",
+    "Parameters": {
+        "skip.header.line.count": "1",
+        "projection.fecha.format": "yyyy-MM-dd",
+        "projection.fecha.interval.unit": "DAYS",
+        "EXTERNAL": "TRUE",
+        "projection.fecha.range": "2026-10-01,2026-10-03",
+        "projection.enabled": "true",
+        "projection.fecha.interval": "1",
+        "classification": "csv",
+        "projection.fecha.type": "date",
+        "storage.location.template": "s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/"
+    }
+}
+$ diff antes despues
+(sin diferencias)
+$ aws glue get-partitions --database-name mensajeria_entregas --table-name intentos_entrega --query "length(Partitions)"
+0

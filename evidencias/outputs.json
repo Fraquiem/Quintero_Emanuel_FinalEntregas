@@ -1,0 +1,42 @@
+{
+  "base_datos_glue": {
+    "sensitive": false,
+    "type": "string",
+    "value": "mensajeria_entregas"
+  },
+  "bucket": {
+    "sensitive": false,
+    "type": "string",
+    "value": "quintero-emanuel-entregas-final-de"
+  },
+  "plantilla_ubicacion_particion": {
+    "sensitive": false,
+    "type": "string",
+    "value": "s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/"
+  },
+  "region": {
+    "sensitive": false,
+    "type": "string",
+    "value": "us-east-2"
+  },
+  "tabla_glue": {
+    "sensitive": false,
+    "type": "string",
+    "value": "intentos_entrega"
+  },
+  "ubicacion_datos": {
+    "sensitive": false,
+    "type": "string",
+    "value": "s3://quintero-emanuel-entregas-final-de/entregas/"
+  },
+  "ubicacion_resultados_athena": {
+    "sensitive": false,
+    "type": "string",
+    "value": "s3://quintero-emanuel-entregas-final-de/resultados-athena/"
+  },
+  "workgroup_athena": {
+    "sensitive": false,
+    "type": "string",
+    "value": "wg_entregas_quintero"
+  }
+}

@@ -1,0 +1,335 @@
+# Limpieza de recursos del ejercicio - 2026-11-12T12:05:54Z - región us-east-2
+# Nota: el identificador de la cuenta AWS se reemplazó por <ID_CUENTA_AWS>; el resto de la salida es literal.
+
+## 1. Vaciado del bucket propio del ejercicio (datos y resultados de Athena)
+$ aws s3 rm s3://quintero-emanuel-entregas-final-de --recursive
+delete: s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-02/entregas.csv
+delete: s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-01/entregas.csv
+delete: s3://quintero-emanuel-entregas-final-de/entregas/fecha=2026-10-03/entregas.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/14416c99-7d19-4240-aec9-a5fffd37c393.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/204a4bb9-a8fe-450c-8e32-f55057ef152f.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/21124626-73ec-499b-b446-e3d37f501a68.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/17b01941-b30a-487f-a59d-5c4e41e43255.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/17b01941-b30a-487f-a59d-5c4e41e43255.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/14416c99-7d19-4240-aec9-a5fffd37c393.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/21124626-73ec-499b-b446-e3d37f501a68.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/2ffae99c-8b8b-40c3-a9c6-68ec38987ab9.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/2ffae99c-8b8b-40c3-a9c6-68ec38987ab9.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/204a4bb9-a8fe-450c-8e32-f55057ef152f.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/55064003-1e57-4fc0-bffa-ecc5ff245bf9.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/55064003-1e57-4fc0-bffa-ecc5ff245bf9.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/58765ecf-e1de-4401-aa2a-8043890e02f3.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/81f55afa-e264-43c1-8413-d8c8378628a2.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/58765ecf-e1de-4401-aa2a-8043890e02f3.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/cf17865b-48ae-4013-97d7-780ee6cd0f74.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/cf17865b-48ae-4013-97d7-780ee6cd0f74.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/81f55afa-e264-43c1-8413-d8c8378628a2.csv.metadata
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/dc03d83f-07c1-45e1-b76b-9043e4e0696e.csv
+delete: s3://quintero-emanuel-entregas-final-de/resultados-athena/dc03d83f-07c1-45e1-b76b-9043e4e0696e.csv.metadata
+$ aws s3api list-object-versions --bucket quintero-emanuel-entregas-final-de --query 'length(Versions || `[]`)'
+0
+
+## 2. terraform destroy
+$ terraform destroy -auto-approve
+aws_glue_catalog_database.entregas: Refreshing state... [id=<ID_CUENTA_AWS>:mensajeria_entregas]
+aws_s3_bucket.datos: Refreshing state... [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_public_access_block.datos: Refreshing state... [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_server_side_encryption_configuration.datos: Refreshing state... [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_ownership_controls.datos: Refreshing state... [id=quintero-emanuel-entregas-final-de]
+aws_athena_workgroup.entregas: Refreshing state... [id=wg_entregas_quintero]
+aws_glue_catalog_table.intentos_entrega: Refreshing state... [id=<ID_CUENTA_AWS>:mensajeria_entregas:intentos_entrega]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_athena_workgroup.entregas will be destroyed
+  - resource "aws_athena_workgroup" "entregas" {
+      - arn           = "arn:aws:athena:us-east-2:<ID_CUENTA_AWS>:workgroup/wg_entregas_quintero" -> null
+      - description   = "Workgroup para las consultas del ejercicio de intentos de entrega." -> null
+      - force_destroy = true -> null
+      - id            = "wg_entregas_quintero" -> null
+      - name          = "wg_entregas_quintero" -> null
+      - region        = "us-east-2" -> null
+      - state         = "ENABLED" -> null
+      - tags          = {} -> null
+      - tags_all      = {
+          - "Autor"    = "Quintero_Emanuel"
+          - "Proyecto" = "DE-Final-Entregas"
+        } -> null
+
+      - configuration {
+          - bytes_scanned_cutoff_per_query          = 0 -> null
+          - enable_minimum_encryption_configuration = false -> null
+          - enforce_workgroup_configuration         = true -> null
+          - publish_cloudwatch_metrics_enabled      = false -> null
+          - requester_pays_enabled                  = false -> null
+            # (1 unchanged attribute hidden)
+
+          - engine_version {
+              - effective_engine_version = "Athena engine version 3" -> null
+              - selected_engine_version  = "AUTO" -> null
+            }
+
+          - result_configuration {
+              - output_location       = "s3://quintero-emanuel-entregas-final-de/resultados-athena/" -> null
+                # (1 unchanged attribute hidden)
+
+              - encryption_configuration {
+                  - encryption_option = "SSE_S3" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+    }
+
+  # aws_glue_catalog_database.entregas will be destroyed
+  - resource "aws_glue_catalog_database" "entregas" {
+      - arn          = "arn:aws:glue:us-east-2:<ID_CUENTA_AWS>:database/mensajeria_entregas" -> null
+      - catalog_id   = "<ID_CUENTA_AWS>" -> null
+      - description  = "Catálogo de los intentos de entrega de paquetes." -> null
+      - id           = "<ID_CUENTA_AWS>:mensajeria_entregas" -> null
+      - name         = "mensajeria_entregas" -> null
+      - parameters   = {} -> null
+      - region       = "us-east-2" -> null
+      - tags         = {} -> null
+      - tags_all     = {
+          - "Autor"    = "Quintero_Emanuel"
+          - "Proyecto" = "DE-Final-Entregas"
+        } -> null
+        # (1 unchanged attribute hidden)
+
+      - create_table_default_permission {
+          - permissions = [
+              - "ALL",
+            ] -> null
+
+          - principal {
+              - data_lake_principal_identifier = "IAM_ALLOWED_PRINCIPALS" -> null
+            }
+        }
+    }
+
+  # aws_glue_catalog_table.intentos_entrega will be destroyed
+  - resource "aws_glue_catalog_table" "intentos_entrega" {
+      - arn                = "arn:aws:glue:us-east-2:<ID_CUENTA_AWS>:table/mensajeria_entregas/intentos_entrega" -> null
+      - catalog_id         = "<ID_CUENTA_AWS>" -> null
+      - database_name      = "mensajeria_entregas" -> null
+      - description        = "Intentos de entrega diarios en CSV, particionados por fecha mediante partition projection." -> null
+      - id                 = "<ID_CUENTA_AWS>:mensajeria_entregas:intentos_entrega" -> null
+      - name               = "intentos_entrega" -> null
+      - parameters         = {
+          - "EXTERNAL"                       = "TRUE"
+          - "classification"                 = "csv"
+          - "projection.enabled"             = "true"
+          - "projection.fecha.format"        = "yyyy-MM-dd"
+          - "projection.fecha.interval"      = "1"
+          - "projection.fecha.interval.unit" = "DAYS"
+          - "projection.fecha.range"         = "2026-10-01,2026-10-03"
+          - "projection.fecha.type"          = "date"
+          - "skip.header.line.count"         = "1"
+          - "storage.location.template"      = "s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/"
+        } -> null
+      - region             = "us-east-2" -> null
+      - retention          = 0 -> null
+      - table_type         = "EXTERNAL_TABLE" -> null
+        # (3 unchanged attributes hidden)
+
+      - partition_keys {
+          - name       = "fecha" -> null
+          - parameters = {} -> null
+          - type       = "string" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - storage_descriptor {
+          - additional_locations      = [] -> null
+          - bucket_columns            = [] -> null
+          - compressed                = false -> null
+          - input_format              = "org.apache.hadoop.mapred.TextInputFormat" -> null
+          - location                  = "s3://quintero-emanuel-entregas-final-de/entregas/" -> null
+          - number_of_buckets         = 0 -> null
+          - output_format             = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat" -> null
+          - parameters                = {} -> null
+          - stored_as_sub_directories = false -> null
+
+          - columns {
+              - name       = "id_envio" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "ciudad" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "transportadora" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "estado" -> null
+              - parameters = {} -> null
+              - type       = "string" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - columns {
+              - name       = "duracion_minutos" -> null
+              - parameters = {} -> null
+              - type       = "int" -> null
+                # (1 unchanged attribute hidden)
+            }
+
+          - ser_de_info {
+              - name                  = "csv" -> null
+              - parameters            = {
+                  - "field.delim"          = ","
+                  - "serialization.format" = ","
+                } -> null
+              - serialization_library = "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe" -> null
+            }
+        }
+    }
+
+  # aws_s3_bucket.datos will be destroyed
+  - resource "aws_s3_bucket" "datos" {
+      - arn                         = "arn:aws:s3:::quintero-emanuel-entregas-final-de" -> null
+      - bucket                      = "quintero-emanuel-entregas-final-de" -> null
+      - bucket_domain_name          = "quintero-emanuel-entregas-final-de.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "us-east-2" -> null
+      - bucket_regional_domain_name = "quintero-emanuel-entregas-final-de.s3.us-east-2.amazonaws.com" -> null
+      - force_destroy               = false -> null
+      - hosted_zone_id              = "Z2O1EMRO9K5GLX" -> null
+      - id                          = "quintero-emanuel-entregas-final-de" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "us-east-2" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Autor"    = "Quintero_Emanuel"
+          - "Proyecto" = "DE-Final-Entregas"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "2198ab376dee9a9fc8da1166547a0fc2333298a7bb25ee5d7f6e8332e43b8ed8" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket_ownership_controls.datos will be destroyed
+  - resource "aws_s3_bucket_ownership_controls" "datos" {
+      - bucket = "quintero-emanuel-entregas-final-de" -> null
+      - id     = "quintero-emanuel-entregas-final-de" -> null
+      - region = "us-east-2" -> null
+
+      - rule {
+          - object_ownership = "BucketOwnerEnforced" -> null
+        }
+    }
+
+  # aws_s3_bucket_public_access_block.datos will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "datos" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "quintero-emanuel-entregas-final-de" -> null
+      - id                      = "quintero-emanuel-entregas-final-de" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "us-east-2" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_s3_bucket_server_side_encryption_configuration.datos will be destroyed
+  - resource "aws_s3_bucket_server_side_encryption_configuration" "datos" {
+      - bucket                = "quintero-emanuel-entregas-final-de" -> null
+      - id                    = "quintero-emanuel-entregas-final-de" -> null
+      - region                = "us-east-2" -> null
+        # (1 unchanged attribute hidden)
+
+      - rule {
+          - blocked_encryption_types = [
+              - "SSE-C",
+            ] -> null
+          - bucket_key_enabled       = false -> null
+
+          - apply_server_side_encryption_by_default {
+              - sse_algorithm     = "AES256" -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+    }
+
+Plan: 0 to add, 0 to change, 7 to destroy.
+
+Changes to Outputs:
+  - base_datos_glue               = "mensajeria_entregas" -> null
+  - bucket                        = "quintero-emanuel-entregas-final-de" -> null
+  - plantilla_ubicacion_particion = "s3://quintero-emanuel-entregas-final-de/entregas/fecha=${fecha}/" -> null
+  - region                        = "us-east-2" -> null
+  - tabla_glue                    = "intentos_entrega" -> null
+  - ubicacion_datos               = "s3://quintero-emanuel-entregas-final-de/entregas/" -> null
+  - ubicacion_resultados_athena   = "s3://quintero-emanuel-entregas-final-de/resultados-athena/" -> null
+  - workgroup_athena              = "wg_entregas_quintero" -> null
+aws_s3_bucket_public_access_block.datos: Destroying... [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_ownership_controls.datos: Destroying... [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket_server_side_encryption_configuration.datos: Destroying... [id=quintero-emanuel-entregas-final-de]
+aws_athena_workgroup.entregas: Destroying... [id=wg_entregas_quintero]
+aws_glue_catalog_table.intentos_entrega: Destroying... [id=<ID_CUENTA_AWS>:mensajeria_entregas:intentos_entrega]
+aws_athena_workgroup.entregas: Destruction complete after 0s
+aws_glue_catalog_table.intentos_entrega: Destruction complete after 0s
+aws_glue_catalog_database.entregas: Destroying... [id=<ID_CUENTA_AWS>:mensajeria_entregas]
+aws_s3_bucket_server_side_encryption_configuration.datos: Destruction complete after 0s
+aws_glue_catalog_database.entregas: Destruction complete after 0s
+aws_s3_bucket_ownership_controls.datos: Destruction complete after 1s
+aws_s3_bucket_public_access_block.datos: Destruction complete after 1s
+aws_s3_bucket.datos: Destroying... [id=quintero-emanuel-entregas-final-de]
+aws_s3_bucket.datos: Destruction complete after 0s
+
+Destroy complete! Resources: 7 destroyed.
+(código de salida: 0)
+
+## 3. Verificación de eliminación con AWS CLI
+$ aws s3api head-bucket --bucket quintero-emanuel-entregas-final-de
+
+aws: [ERROR]: An error occurred (404) when calling the HeadBucket operation: Not Found
+$ aws glue get-database --name mensajeria_entregas
+
+aws: [ERROR]: An error occurred (EntityNotFoundException) when calling the GetDatabase operation: Database mensajeria_entregas not found.
+$ aws glue get-table --database-name mensajeria_entregas --name intentos_entrega
+
+aws: [ERROR]: An error occurred (EntityNotFoundException) when calling the GetTable operation: Entity Not Found
+$ aws athena get-work-group --work-group wg_entregas_quintero
+
+aws: [ERROR]: An error occurred (InvalidRequestException) when calling the GetWorkGroup operation: WorkGroup is not found.
+
+Additional error details:
+AthenaErrorCode: INVALID_INPUT
+$ terraform state list
+(estado sin recursos)
