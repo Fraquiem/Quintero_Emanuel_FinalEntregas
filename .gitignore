@@ -1,0 +1,28 @@
+# Terraform: estado, planes y carpeta local de proveedores
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.*
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+*.tfvars
+*.tfvars.json
+
+# Credenciales y secretos
+.aws/
+credentials
+*.pem
+*.key
+.env
+.env.*
+
+# Archivos temporales locales
+.tmp/
